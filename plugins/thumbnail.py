@@ -33,18 +33,20 @@ async def delthumbnail(bot, update):
     await db.set_thumbnail(update.from_user.id, thumbnail=None)
     await bot.send_message(chat_id=update.chat.id, text=Translation.DEL_ETED_CUSTOM_THUMB_NAIL, reply_to_message_id=update.message_id)
 
-@Client.on_message(filters.private & filters.command("showthumb") )
+@Client.on_message(filters.private & filters.command("sthumb") )
 async def viewthumbnail(bot, update):
-    
+    if not update.from_user:
+        return await update.reply_text("I don't know about you sar :(")
+    await add_user_to(bot, update)
     thumbnail = await db.get_thumbnail(update.from_user.id)
-    if thumbnail is not None:
-        await bot.send_photo(
-        chat_id=update.chat.id,
-        photo=thumbnail,
-        caption=f"Yᴏᴜʀ ᴄᴜʀʀᴇɴᴛ sᴀᴠᴇᴅ ᴛʜᴜᴍʙɴᴀɪʟ 🦠",
-        reply_to_message_id=update.message_id)
-    else:
-        await update.reply_text(text=f"Nᴏ Tʜᴜᴍʙɴᴀɪʟ ғᴏᴜɴᴅ 🤒")
+    if not thumbnail:
+        return await update.reply_text("You didn't set custom thumbnail!")
+    await bot.send_photo(update.chat.id, thumbnail, caption="Custom Thumbnail",
+                       reply_markup=types.InlineKeyboardMarkup(
+                           [[types.InlineKeyboardButton("Delete Thumbnail",
+                                                        callback_data="deleteThumbnail")]]
+                       ))
+
 
 async def Gthumb01(bot, update):
     thumb_image_path = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + ".jpg"
