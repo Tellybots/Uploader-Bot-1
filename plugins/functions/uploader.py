@@ -1,7 +1,7 @@
 # (c) @AbirHasan2005
 import asyncio
 import time
-from configs import Config
+from .config import Config
 from .database.add import db
 from .functions.display_progress import progress_for_pyrogram, humanbytes
 from humanfriendly import format_timespan
