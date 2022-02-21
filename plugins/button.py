@@ -230,10 +230,10 @@ async def youtube_dl_call_back(bot, update):
                         start_time
                     )
                 )
-    try:
-        sent_ = None
-        if (await db.get_upload_as_doc(cb.from_user.id)) is False:
-            c_time = time.time()
+             try:
+                 sent_ = None
+                 if (await db.get_upload_as_doc(cb.from_user.id)) is False:
+                     c_time = time.time()
             elif tg_send_type == "file":
                 thumbnail = await Gthumb01(bot, update)
                 sent_ = await bot.send_document(
@@ -250,6 +250,7 @@ async def youtube_dl_call_back(bot, update):
                         start_time
                     )
                 )
+            else:
             elif tg_send_type == "vm":
                 width, duration = await Mdata02(download_directory)
                 thumbnail = await Gthumb02(bot, update, duration, download_directory)
@@ -267,6 +268,7 @@ async def youtube_dl_call_back(bot, update):
                         start_time
                     )
                 )
+            else:
             elif tg_send_type == "video":
                  width, height, duration = await Mdata01(download_directory)
                  thumbnail = await Gthumb02(bot, update, duration, download_directory)
