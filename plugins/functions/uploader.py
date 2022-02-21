@@ -9,14 +9,14 @@ from pyrogram import Client
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 
-async def UploadVideo(bot: Client, cb: CallbackQuery, merged_vid_path: str, width, height, duration, video_thumbnail, file_size):
+async def UploadVideo(bot: Client, cb: CallbackQuery, download_directory: str, width, height, duration, video_thumbnail, file_size):
     try:
         sent_ = None
         if (await db.get_upload_as_doc(cb.from_user.id)) is False:
             c_time = time.time()
             sent_ = await bot.send_video(
                 chat_id=cb.message.chat.id,
-                video=merged_vid_path,
+                video=download_directory,
                 width=width,
                 height=height,
                 duration=duration,
@@ -40,7 +40,7 @@ async def UploadVideo(bot: Client, cb: CallbackQuery, merged_vid_path: str, widt
             c_time = time.time()
             sent_ = await bot.send_document(
                 chat_id=cb.message.chat.id,
-                document=merged_vid_path,
+                document=download_directory,
                 caption=Config.CAPTION.format((await bot.get_me()).username) + f"\n\n**File Name:** `{merged_vid_path.rsplit('/', 1)[-1]}`\n**Duration:** `{format_timespan(duration)}`\n**File Size:** `{humanbytes(file_size)}`",
                 thumb=video_thumbnail,
                 progress=progress_for_pyrogram,
