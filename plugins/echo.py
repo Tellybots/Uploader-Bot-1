@@ -165,10 +165,6 @@ async def echo(bot, update):
                         InlineKeyboardButton(
                             " Vɪᴅᴇᴏ " + format_string + " " + approx_file_size + " ",
                             callback_data=(cb_string_video).encode("UTF-8")
-                        ),
-                        InlineKeyboardButton(
-                            " Fɪʟᴇ " + format_ext + " " + approx_file_size + " ",
-                            callback_data=(cb_string_file).encode("UTF-8")
                         )
                     ]
                     """if duration is not None:
@@ -189,12 +185,6 @@ async def echo(bot, update):
                             "] ( " +
                             approx_file_size + " )",
                             callback_data=(cb_string_video).encode("UTF-8")
-                        ),
-                        InlineKeyboardButton(
-                            " Fɪʟᴇ [" +
-                            "] ( " +
-                            approx_file_size + " )",
-                            callback_data=(cb_string_file).encode("UTF-8")
                         )
                     ]
                 inline_keyboard.append(ikeyboard)
