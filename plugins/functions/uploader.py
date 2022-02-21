@@ -2,8 +2,8 @@
 import asyncio
 import time
 from plugins.config import Config
-from .database.database import db
-from .functions.display_progress import progress_for_pyrogram, humanbytes
+from plugins.database.database import db
+from plugins.functions.display_progress import progress_for_pyrogram, humanbytes
 from humanfriendly import format_timespan
 from pyrogram import Client
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
