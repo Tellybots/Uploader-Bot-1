@@ -21,17 +21,22 @@ from pyrogram import filters
 from .database.database import db
 from .functions.help_Nekmo_ffmpeg import take_screen_shot
 
-@Client.on_message(filters.private & filters.photo)
-async def save_photo(bot, update):
-    
-    await db.set_thumbnail(update.from_user.id, thumbnail=update.photo.file_id)
-    await bot.send_message(chat_id=update.chat.id, text=Translation.SAVED_CUSTOM_THUMB_NAIL, reply_to_message_id=update.message_id)
+@Client.on_message(filters.command("setthumb") & filters.private & ~filters.edited)
+async def set_thumbnail(c: Client, m: "types.Message"):
+    if (not m.reply_to_message) or (not m.reply_to_message.photo):
+        return await m.reply_text("Reply to any image to save in as custom thumbnail!")
+    if not m.from_user:
+        return await m.reply_text("I don't know about you sar :(")
+    await add_user_to_database(c, m)
+    await db.set_thumbnail(m.from_user.id, m.reply_to_message.photo.file_id)
+    await m.reply_text("Okay,\n"
+                       "I will use this image as custom thumbnail.",
+                       reply_markup=types.InlineKeyboardMarkup(
+                           [[types.InlineKeyboardButton("Delete Thumbnail",
+                                                        callback_data="deleteThumbnail")]]
+                       ))
 
-@Client.on_message(filters.private & filters.command("delthumb"))
-async def delthumbnail(bot, update):
-    
-    await db.set_thumbnail(update.from_user.id, thumbnail=None)
-    await bot.send_message(chat_id=update.chat.id, text=Translation.DEL_ETED_CUSTOM_THUMB_NAIL, reply_to_message_id=update.message_id)
+
 
 @Client.on_message(filters.private & filters.command("sthumb") )
 async def viewthumbnail(bot, update):
