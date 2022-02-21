@@ -2,7 +2,7 @@
 import asyncio
 import time
 from plugins.config import Config
-from .database.add import db
+from .database.database import db
 from .functions.display_progress import progress_for_pyrogram, humanbytes
 from humanfriendly import format_timespan
 from pyrogram import Client
