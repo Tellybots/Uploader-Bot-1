@@ -37,7 +37,7 @@ async def delthumbnail(bot, update):
 async def viewthumbnail(bot, update):
     if not update.from_user:
         return await update.reply_text("I don't know about you sar :(")
-    await add_user_to(bot, update)
+    await add_user_to_database(bot, update)
     thumbnail = await db.get_thumbnail(update.from_user.id)
     if not thumbnail:
         return await update.reply_text("You didn't set custom thumbnail!")
