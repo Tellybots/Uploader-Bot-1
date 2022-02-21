@@ -9,7 +9,7 @@ import numpy
 import os
 from PIL import Image
 import time
-
+from .database.add import add_user_to_database
 # the Strings used for this "thing"
 from plugins.main import Translation
 from pyrogram import Client
@@ -36,7 +36,14 @@ async def set_thumbnail(c: Client, m: "types.Message"):
                                                         callback_data="deleteThumbnail")]]
                        ))
 
-
+@Client.on_message(filters.command("delthumb") & filters.private & ~filters.edited)
+async def delete_thumbnail(c: Client, m: "types.Message"):
+    if not m.from_user:
+        return await m.reply_text("I don't know about you sar :(")
+    await add_user_to_database(c, m)
+    await db.set_thumbnail(m.from_user.id, None)
+    await m.reply_text("Okay,\n"
+                       "I deleted custom thumbnail from my database.")
 
 @Client.on_message(filters.private & filters.command("sthumb") )
 async def viewthumbnail(bot, update):
